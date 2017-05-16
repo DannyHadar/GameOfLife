@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">GameOfLife</string>
+    <string name="generations_count_format">generations:%1$d</string>
+    <string name="faster">Faster</string>
+    <string name="start">start</string>
+    <string name="slower">Slower</string>
+    <string name="clear">Clear</string>
+    <string name="next">Next</string>
+
+    <string name="welcome_to_game_of_life">Welcome to game of life</string>
+    <string name="please_enter_world_size">Please enter world size</string>
+    <string name="go">Go</string>
+    <string name="Stop">stop</string>
+    <string name="Start">start</string>
+</resources>
