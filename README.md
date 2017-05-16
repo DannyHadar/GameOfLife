@@ -1,5 +1,5 @@
 # GameOfLife
-This app implements the "Conway's Game Of Life"
+This app implements "Conway's Game Of Life"
 
 https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life
 
