@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -40,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private volatile int mInterval;
     private int mGenerationsCount;
 
-    private volatile boolean mPromoteTask;
+    private volatile boolean mPromoteTaskIsRunning;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
         mInterval = STARTING_INTERVAL;
         mGenerationsCount = 0;
 
-        mPromoteTask = false;
+        mPromoteTaskIsRunning = false;
 
         mCmdButtonsListener = new CmdButtonsListener();
         mCellsButtonsListener = new CellsButtonListener();
@@ -86,7 +87,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void startOpeningDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(getString(R.string.welcome_to_game_of_life)).setMessage(getString(R.string.please_enter_world_size));
+        builder.setTitle(getString(R.string.welcome_to_game_of_life))
+                .setMessage(getString(R.string.please_enter_world_size))
+                .setCancelable(false);
 
         final EditText input = new EditText(this);
         input.setInputType(InputType.TYPE_CLASS_NUMBER);
@@ -110,7 +113,10 @@ public class MainActivity extends AppCompatActivity {
                 1f
         );
 
-        param.setMargins(1, 1, 1, 1);
+        int pxMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                1, getResources().getDisplayMetrics());
+
+        param.setMargins(pxMargin, pxMargin, pxMargin, pxMargin);
 
         mCells = new Button[worldSize][worldSize];
 
@@ -149,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... params) {
             try {
-                while (mPromoteTask) {
+                while (mPromoteTaskIsRunning) {
                     Thread.sleep(mInterval);
                     publishProgress();
                 }
@@ -174,7 +180,7 @@ public class MainActivity extends AppCompatActivity {
                     promoteOneGeneration();
                     break;
                 case R.id.bt_start:
-                    if (!mPromoteTask) {
+                    if (!mPromoteTaskIsRunning) {
                         startTaskPromote();
                     } else {
                         stopTaskPromote();
@@ -194,7 +200,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void stopTaskPromote() {
-        mPromoteTask = false;
+        mPromoteTaskIsRunning = false;
         mTask.cancel(true);
         mStartButton.setText(R.string.Start);
         mNextButton.setEnabled(true);
@@ -204,7 +210,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void startTaskPromote() {
-        mPromoteTask = true;
+        mPromoteTaskIsRunning = true;
         mTask = new GenerationsTask();
         mTask.execute();
         mStartButton.setText(R.string.Stop);
