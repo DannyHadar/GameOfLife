@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     CmdButtonsListener mCmdButtonsListener;
     CellsButtonListener mCellsButtonsListener;
 
-    private GenerationsTask mTask;
+    private GenerationsTask mPromoteTask;
 
     private volatile int mInterval;
     private int mGenerationsCount;
@@ -201,7 +201,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void stopTaskPromote() {
         mPromoteTaskIsRunning = false;
-        mTask.cancel(true);
+        mPromoteTask.cancel(true);
         mStartButton.setText(R.string.Start);
         mNextButton.setEnabled(true);
         mClearButton.setEnabled(true);
@@ -211,8 +211,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void startTaskPromote() {
         mPromoteTaskIsRunning = true;
-        mTask = new GenerationsTask();
-        mTask.execute();
+        mPromoteTask = new GenerationsTask();
+        mPromoteTask.execute();
         mStartButton.setText(R.string.Stop);
         mNextButton.setEnabled(false);
         mClearButton.setEnabled(false);
